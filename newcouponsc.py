@@ -9,9 +9,9 @@ couponCodeValid = "FREESHIPPING2020"
 couponDescValid = "Totally 100% free shipping, totally not a scam"
 couponAmntValid = "100"
 
-couponCodeArray = [couponCodeValid, "", "", "", ""]
-couponDescArray = [couponDescValid, ""]
-couponAmntArray = [couponAmntValid, ""]
+couponCodeArray = [couponCodeValid, " ", "@#$%"]
+couponDescArray = [couponDescValid, " ", "id=1; SELECT pg_sleep(10);-- -"]
+couponAmntArray = [couponAmntValid, "-100", "abc", "^*&", " "]
 
 
 def NewCouponTest(code, desc, amnt, count, testtype):
@@ -92,7 +92,7 @@ def NewCouponTest(code, desc, amnt, count, testtype):
         
         # Take a screenshot and get the filename
         time.sleep(1)
-        filename = f"C:/Users/User/Documents/GitHub/Selenium/CouponSS/Coupon_{count}_{code}_{amnt}_{testtype}.png"
+        filename = f"C:/Users/User/Documents/GitHub/Selenium/CouponSS/{testtype}_{count}.png"
         driver.save_screenshot(filename)
         time.sleep(2)
         
@@ -114,7 +114,7 @@ def NewCouponTest(code, desc, amnt, count, testtype):
             confDelete.click()
             time.sleep(2)
         except Exception as e:
-            print(f"Field insertion failed! Error: {e}")
+            print(f"Coupon not created!")
 
     except Exception as e:
         print(f"Test failed! Error: {e}")
@@ -124,15 +124,12 @@ def NewCouponTest(code, desc, amnt, count, testtype):
         driver.quit()
 
 print("Coupon testing")
-NewCouponTest(couponCodeValid, couponDescValid, couponAmntValid, 1, "CouponTest")
-# for c, password in enumerate(password_array):
-#     LoginTest("admin@admin.com", password, c, "PassTest")
 
-# print("Email testing")
-# for c, email in enumerate(email_array):
-#     LoginTest(email, "SKIW3113", c, "EmailTest")
+for c, cca in enumerate(couponCodeArray):
+    NewCouponTest(cca, couponDescValid, couponAmntValid, c, "CCT")
 
-# print("Password testing")
-# for c, password in enumerate(password_array):
-#     LoginTest("admin@admin.com", password, c, "PassTest")
-        
+for c, cda in enumerate(couponDescArray):
+    NewCouponTest(couponCodeValid, cda, couponAmntValid, c, "CDT")
+
+for c, caa in enumerate(couponAmntArray):
+    NewCouponTest(couponCodeValid, caa, couponDescValid, c, "CAT")
