@@ -6,7 +6,7 @@ import time
 # driver = webdriver.Chrome()
 
 couponCodeValid = "FREESHIPPING2020"
-couponDescValid = "Tottally 100% free shipping, totally not a scam"
+couponDescValid = "Totally 100% free shipping, totally not a scam"
 couponAmntValid = "100"
 
 couponCodeArray = [couponCodeValid, "", "", "", ""]
@@ -43,7 +43,7 @@ def NewCouponTest(code, desc, amnt, count, testtype):
         
         #----- Start Coupon testing ------
         #Get fields
-        couponCode = driver.find_element(by=By.NAME, value="coupon")
+        couponCode = driver.find_element(by=By.NAME, value="coupon")   
         couponDesc = driver.find_element(by=By.ID, value="description")
         #couponStatus = driver.find_element(by=By.CLASS_NAME, value="toggle enabled")
         couponamnt = driver.find_element(by=By.NAME, value="discount_amount")
@@ -52,17 +52,39 @@ def NewCouponTest(code, desc, amnt, count, testtype):
         couponType = driver.find_element(by=By.XPATH, value="//form[@id='couponForm']/div/div[2]/div[2]/div/div/div/div/div/div/div/label/span")
         
         # Insert values
-        couponCode.send_keys(code)
-        time.sleep(2)
-        couponDesc.send_keys(desc)
-        time.sleep(2)
+        try:
+            couponCode.send_keys(code)
+            print(f"Insertion of {code} succesful!")
+        except Exception as e:
+            print(f"Field insertion failed! Error: {e}")
+            
+        # time.sleep(2)
+        try:
+            couponDesc.send_keys(desc)
+            print(f"Insertion of {desc} succesful!")
+        except Exception as e:
+            print(f"Field insertion failed! Error: {e}")
+               
+        # time.sleep(2)
         #couponStatus.click()
-        couponamnt.send_keys(amnt)
-        time.sleep(2)
+        try:
+            couponamnt.send_keys(amnt)
+            print(f"Insertion of {amnt} succesful!")
+        except Exception as e:
+            print(f"Field insertion failed! Error: {e}")
+        # time.sleep(2)
         #couponBox.click()
-        couponType.click()
-        time.sleep(2)
-        submit_button.click()
+        try:
+            couponType.click()
+        except Exception as e:
+            print(f"Field insertion failed! Error: {e}")
+            print(f"Selection of coupon type succesful!")
+        # time.sleep(2)
+        try:
+            submit_button.click()
+        except Exception as e:
+            print(f"Field insertion failed! Error: {e}")
+            print(f"Coupon saved succesfully!")
         
         # Check if the "font-bold" element exists (indicating success)
         print(f"Details: Code:{code}, Amount:{amnt}")
@@ -72,6 +94,27 @@ def NewCouponTest(code, desc, amnt, count, testtype):
         time.sleep(1)
         filename = f"C:/Users/User/Documents/GitHub/Selenium/CouponSS/Coupon_{count}_{code}_{amnt}_{testtype}.png"
         driver.save_screenshot(filename)
+        time.sleep(2)
+        
+        #------------Delete created coupon--------------
+        driver.get("http://localhost:3000/admin/coupons")
+        time.sleep(2)
+        # selectCoupon = driver.find_element(by=By.XPATH, value="//div[@id='app']/div/div[2]/div[2]/div/div[2]/table/tbody/tr[2]/td/div/div/label/span")
+        # selectDelete = driver.find_element(by=By.XPATH, value="//div[@id='app']/div/div[2]/div[2]/div/div[2]/table/tbody/tr/td/div/a[4]")
+        # confDelete = driver.find_element(by=By.XPATH, value="//body[@id='body']/div[2]/div/div/div/div[3]/div/div/button[2]/span")
+        
+        try:
+            selectCoupon = driver.find_element(by=By.XPATH, value="//div[@id='app']/div/div[2]/div[2]/div/div[2]/table/tbody/tr[2]/td/div/div/label/span")
+            selectCoupon.click()
+            time.sleep(2)
+            selectDelete = driver.find_element(by=By.XPATH, value="//div[@id='app']/div/div[2]/div[2]/div/div[2]/table/tbody/tr/td/div/a[4]")
+            selectDelete.click()
+            time.sleep(2)
+            confDelete = driver.find_element(by=By.XPATH, value="//body[@id='body']/div[2]/div/div/div/div[3]/div/div/button[2]/span")
+            confDelete.click()
+            time.sleep(2)
+        except Exception as e:
+            print(f"Field insertion failed! Error: {e}")
 
     except Exception as e:
         print(f"Test failed! Error: {e}")
@@ -93,6 +136,3 @@ NewCouponTest(couponCodeValid, couponDescValid, couponAmntValid, 1, "CouponTest"
 # for c, password in enumerate(password_array):
 #     LoginTest("admin@admin.com", password, c, "PassTest")
         
-
-    
-    
